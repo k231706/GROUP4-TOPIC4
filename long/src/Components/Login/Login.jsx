@@ -46,8 +46,17 @@ const Login = () => {
                 navigate('/home'); // chuyen den trang home
             }
 
-        } catch (err) {
-            setError(err.response?.data?.message || 'Check again your account and password');
+        }catch (err) {
+            if (err.response) {
+                // Lỗi từ phía server (status code ngoài khoảng 2xx)
+                setError(err.response.data.message || 'Something went wrong. Please try again.');
+            } else if (err.request) {
+                // Không nhận được phản hồi từ server
+                setError('No response from server. Please check your network connection.');
+            } else {
+                // Các lỗi khác
+                setError('An unknown error occurred.');
+            }
         }
 
 

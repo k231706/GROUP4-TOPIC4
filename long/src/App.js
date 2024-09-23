@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate, Route, Router, RouterProvider, Routes } 
 import Login from './Components/Login/Login';
 import SignUp from './Components/SignUp/SignUp';
 import Contact from './Components/Contact/Contact';
+import Service from './Components/Service/Service';
 
 function App() {
   const router = createBrowserRouter([
@@ -20,8 +21,12 @@ function App() {
     },
     {
       path: "contact",
-      element: <Contact/>,
-    }
+      element: <Contact />,
+    },
+    {
+      path: "service",
+      element: <Service />,
+    },
   ]);
 
   return <RouterProvider router={router} />;
