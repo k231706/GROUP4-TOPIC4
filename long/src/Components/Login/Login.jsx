@@ -67,12 +67,6 @@ const Login = () => {
     const handleSignUp = () => {
         navigate('/signup'); // chuyen trang dang ky 
     };
-
-    // chuyen trang contact (nam trong trang main)
-    const navigateContact = () => {
-        navigate('/contact');
-    }
-
     return (
         <div className="container-fluid">
             <div className="row align-items-center vh-100 img-left">
@@ -143,9 +137,7 @@ const Login = () => {
                                 </button>
                             </div>
                             <div className="text-center mt-3">
-                                <button type="button" className="btn btn-danger" onClick={navigateContact}>
-                                    Contact
-                                </button>
+
                             </div>
                         </form>
                     </div>
