@@ -5,6 +5,8 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.swp_group4.back_end.entities.Account;
 import com.swp_group4.back_end.enums.Role;
+import com.swp_group4.back_end.exception.AppException;
+import com.swp_group4.back_end.exception.ErrorCode;
 import com.swp_group4.back_end.repositories.AccountRepository;
 import com.swp_group4.back_end.requests.CreateAccountRequest;
 import com.swp_group4.back_end.requests.LoginRequest;
@@ -39,12 +41,13 @@ public class AccountService {
         String userName = request.getUsername();
         String password = request.getPassword();
 
-        Account acc = accountRepository.findByUsername(userName).orElseThrow(()-> new RuntimeException("Username isn't found"));
+        Account acc = accountRepository.findByUsername(userName).orElseThrow(()
+                                                                -> new AppException(ErrorCode.USER_NOT_EXIST));
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
         if (!passwordEncoder.matches(password, acc.getPassword())) {
-            throw new RuntimeException("Wrong password");
+            throw new AppException(ErrorCode.PASSWORD_WRONG);
         }
 
         String token = generateToken(acc);

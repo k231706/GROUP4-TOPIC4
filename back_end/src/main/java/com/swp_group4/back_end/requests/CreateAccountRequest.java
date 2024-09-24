@@ -13,11 +13,11 @@ import lombok.experimental.FieldDefaults;
 @Builder
 public class CreateAccountRequest {
 
-    @Size(min = 8, message = "Username must be at least 8 characters long")
-    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]+$", message = "Username must contain both letters and numbers")
+    @Size(min = 8, message = "USERNAME_NOT_VALID_1")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]+$", message = "USERNAME_NOT_VALID_2")
     String username;
 
-    @Size(min = 8, message = "Password must be at least 8 characters long")
+    @Size(min = 8, message = "PASSWORD_NOT_VALID")
     String password;
 
 }
