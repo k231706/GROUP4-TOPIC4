@@ -46,7 +46,7 @@ const Login = () => {
                 navigate('/home'); // chuyen den trang home
             }
 
-        }catch (err) {
+        } catch (err) {
             if (err.response) {
                 // Lỗi từ phía server (status code ngoài khoảng 2xx)
                 setError(err.response.data.message || 'Something went wrong. Please try again.');

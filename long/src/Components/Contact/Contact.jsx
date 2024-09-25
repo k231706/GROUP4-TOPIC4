@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import './Contact.css';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
+import logo from '../Assests/logo-navbar.png'
 import axios from 'axios';
 
 const Contact = () => {
     const [formData, setFormData] = useState({ // luu thong tin lien he cua khach hang
         service: '',
-        fullName: '',
-        email: '',
-        contactNumber: '',
-        message: ''
+        firstName: '',
+        lastName: '',
+        address: '',
+        phone: '',
+        detail: ''
     });
 
     const [file, setFile] = useState(null);
@@ -43,25 +45,26 @@ const Contact = () => {
 
         const dataToSend = new FormData();
         dataToSend.append('service', formData.service);
-        dataToSend.append('fullName', formData.fullName);
-        dataToSend.append('email', formData.email);
-        dataToSend.append('contactNumber', formData.contactNumber);
-        dataToSend.append('message', formData.message);
+        dataToSend.append('firstName', formData.firstName);
+        dataToSend.append('lastName', formData.lastName);
+        dataToSend.append('address', formData.address); // service, firstname, lastname, address, contactNumber, detail
+        dataToSend.append('phone', formData.phone);
+        dataToSend.append('detail', formData.detail);
         if (file) {
             dataToSend.append('file', file);
         }
 
         try {
-            const response = await axios.post('http://localhost/8080/api/contact-us', dataToSend);
+            const response = await axios.post('http://localhost/8080/contact-us', dataToSend);
             console.log(response.data);
 
             if (response.status === 200) {
                 setSubmitted(true);
             }
 
-        } catch (err) {
+        } catch (error) {
             setError('FAIL, please try again !!');
-            console.error(err);
+            console.error(error);
         }
 
     };
@@ -90,7 +93,7 @@ const Contact = () => {
 
                         ) : ( // FAIL !
                             <form onSubmit={handleSubmit} className="bg-light p-4 rounded shadow-lg" >
-                                {error && <div className="notification-error aleart-danger">{error}</div>}
+                                {error && <div className="notification-error alert-danger">{error}</div>}
 
                                 <div className="form-group mb-6">
                                     <label>Select Service</label>
@@ -107,46 +110,54 @@ const Contact = () => {
                                     </select>
                                 </div>
                                 <div className="form-group mb-6">
-                                    <label>Full Name</label>
-                                    <input type="text" className="form-control" name="fullName"
-                                        value={formData.fullName}
+                                    <label>First Name</label>
+                                    <input type="text" className="form-control" name="firstName"
+                                        value={formData.firstName}
                                         onChange={handleChange}
                                         required />
                                 </div>
 
                                 <div className="form-group mb-6">
-                                    <label>Email</label>
-                                    <input type="text" className="form-control" name="email"
-                                        value={formData.email}
+                                    <label>Last Name</label>
+                                    <input type="text" className="form-control" name="lastName"
+                                        value={formData.lastName}
                                         onChange={handleChange}
                                         required />
                                 </div>
 
                                 <div className="form-group mb-6">
-                                    <label>Contact Number</label>
+                                    <label>Address</label>
+                                    <input type="text" className="form-control" name="address"
+                                        value={formData.address}
+                                        onChange={handleChange}
+                                        required />
+                                </div>
+
+                                <div className="form-group mb-6">
+                                    <label>Phone</label>
                                     <input
                                         type="text"
                                         className="form-control"
-                                        name="contactNumber"
-                                        value={formData.contactNumber}
+                                        name="phone"
+                                        value={formData.phone}
                                         onChange={handleChange}
                                         required
                                     />
                                 </div>
 
                                 <div className="form-group mb-6">
-                                    <label>Message</label>
+                                    <label>Detail</label>
                                     <textarea
                                         className="form-control"
-                                        name="message"
+                                        name="detail"
                                         rows="4"
-                                        value={formData.message}
+                                        value={formData.detail}
                                         onChange={handleChange}
                                         required
                                     ></textarea>
                                 </div>
 
-                                <button type="submit" className="btn btn-danger w-100 fw-boild py-1 mt-3">
+                                <button type="submit" className="btn btn-danger py-3 w-100 fw-boild py-1 mt-3">
                                     Submit request
                                 </button>
                             </form>
@@ -164,6 +175,7 @@ const Contact = () => {
                                     onChange={handleFileChange}
                                     accept="image/*"
                                 />
+                                <img className="logo-contact" src={logo} alt="" />
                             </div>
                         </div>
                     )}

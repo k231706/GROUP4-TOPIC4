@@ -51,15 +51,25 @@
 }
 
 
-.aleart-danger {
-  background-color: #f44336;
-  /* Màu đỏ cho thông báo lỗi */
+.logo-contact {
+  width: 150px;
+  display: flex;
+  justify-content: right;
+  margin-top: 200px;
+  margin-left: 480px;
 }
-.label-upload{
+
+.alert-danger {
+  background-color: #f44336;
+}
+
+.label-upload {
   font-weight: bold;
 }
-.input-upload{
-  margin-top: 50px;}
+
+.input-upload {
+  margin-top: 50px;
+}
 
 @keyframes fadeInOut {
   0% {
@@ -82,4 +92,3 @@
     transform: translateX(100%);
   }
 }
-

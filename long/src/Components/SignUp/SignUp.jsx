@@ -7,7 +7,6 @@ import logo from "../Assests/logo-navbar.png";
 
 const SignUp = () => {
     const [account, setAccount] = useState('');
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showHang, setShowHang] = useState(false); // state cho nut show hang
@@ -29,7 +28,6 @@ const SignUp = () => {
             const response = await axios.post('http://localhost:8080/signup', {
                 account: account, // dinh dang du lieu thanh object de gui cho backend ne` ^^
                 password: password,
-                email: email
             }
             );
             console.log(response.data);
@@ -65,18 +63,6 @@ const SignUp = () => {
                                 />
                                 <i className="fa-solid fa-user person"></i>
                             </div>
-                            {/* Email */}
-                            <div className="form-group mb-3 position-relative">
-                                <input
-                                    type="email"
-                                    className="form-control input"
-                                    value={email}
-                                    placeholder="Enter Email"
-                                    onChange={(err) => setEmail(err.target.value)}
-                                    required
-                                />
-                                <i className="fa-solid fa-envelope person"></i>
-                            </div>
                             {/* password */}
                             <div className="form-group mb-3 position-relative">
                                 <input
@@ -107,12 +93,12 @@ const SignUp = () => {
                                     <i className={showHang ? 'fas fa-eye-slash' : 'fas fa-eye'}></i>
                                 </button>
                             </div>
-                            <button type="submit" className="btn btn-primary w-100">Sign up</button>
+                            <button type="submit" className="btn btn-danger w-100 fw-medium py-2">SIGN UP</button>
 
 
                             {/* Điều hướng về trang đăng nhập */}
                             <div className="text-center mt-3">
-                                <button type="button" className="btn btn-link" onClick={() => navigate('/login')}>
+                                <button type="button" className="btn btn-alert" onClick={() => navigate('/login')}>
                                     Already have an account? Log In
                                 </button>
                             </div>
