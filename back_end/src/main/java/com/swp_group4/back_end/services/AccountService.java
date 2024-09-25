@@ -4,16 +4,19 @@ import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.swp_group4.back_end.entities.Account;
+import com.swp_group4.back_end.entities.Customer;
 import com.swp_group4.back_end.enums.Role;
 import com.swp_group4.back_end.exception.AppException;
 import com.swp_group4.back_end.exception.ErrorCode;
 import com.swp_group4.back_end.repositories.AccountRepository;
+import com.swp_group4.back_end.repositories.CustomerRepository;
 import com.swp_group4.back_end.requests.CreateAccountRequest;
 import com.swp_group4.back_end.requests.LoginRequest;
 import com.swp_group4.back_end.responses.LoginResponse;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,12 +28,15 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.StringJoiner;
 
+@Slf4j
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountService {
 
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    CustomerService customerService;
 
     @NonFinal
     @Value("${jwt.SIGNER_KEY}")
@@ -68,7 +74,9 @@ public class AccountService {
                 .role(Role.CUSTOMER)
                 .build();
 
-        return accountRepository.save(acc);
+        accountRepository.save(acc);
+        customerService.createCustomer(acc.getAccountId(), acc.getUsername());
+        return acc;
     }
 
     public String generateToken(Account acc){
@@ -76,7 +84,7 @@ public class AccountService {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(acc.getUsername())
+                .subject(acc.getAccountId())
                 .issuer("swp_group4")
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))

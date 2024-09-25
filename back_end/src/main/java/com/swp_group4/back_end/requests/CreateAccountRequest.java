@@ -1,6 +1,5 @@
 package com.swp_group4.back_end.requests;
 
-import com.swp_group4.back_end.enums.Role;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
