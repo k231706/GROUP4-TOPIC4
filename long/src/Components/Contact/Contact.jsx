@@ -12,7 +12,7 @@ const Contact = () => {
         lastName: '',
         address: '',
         phone: '',
-        detail: ''
+        customerRequest: ''
     });
 
     const [file, setFile] = useState(null);
@@ -47,9 +47,9 @@ const Contact = () => {
         dataToSend.append('service', formData.service);
         dataToSend.append('firstName', formData.firstName);
         dataToSend.append('lastName', formData.lastName);
-        dataToSend.append('address', formData.address); // service, firstname, lastname, address, contactNumber, detail
+        dataToSend.append('address', formData.address); // service, firstname, lastname, address, contactNumber, customRequest
         dataToSend.append('phone', formData.phone);
-        dataToSend.append('detail', formData.detail);
+        dataToSend.append('customerRequest', formData.customerRequest);
         if (file) {
             dataToSend.append('file', file);
         }
@@ -151,7 +151,7 @@ const Contact = () => {
                                         className="form-control"
                                         name="detail"
                                         rows="4"
-                                        value={formData.detail}
+                                        value={formData.customerRequest}
                                         onChange={handleChange}
                                         required
                                     ></textarea>
