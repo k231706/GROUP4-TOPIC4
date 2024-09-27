@@ -27,28 +27,28 @@
     height: 120px;
   }
   
-  .nav-links {
+  .ul-navbar {
     list-style: none;
     display: flex;
     justify-content: space-between;
   }
   
-  .nav-links li {
+  .ul-navbar li {
     margin: 0 60px;
   }
   
-  .nav-links a {
+  .ul-navbar a {
     text-decoration: none;
     color: black;
     font-size: 18px;
   }
-  .nav-links li:first-child a {
+  .ul-navbar li:first-child a {
     border-top: solid 1px;
     border-bottom: solid 1px;
     padding: 15px; 
   }
   
-  .nav-links a:hover {
+  .ul-navbar a:hover {
     color: #f0a500;
   }
   

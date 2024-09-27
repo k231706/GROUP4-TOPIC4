@@ -15,7 +15,7 @@ const Navbar = () => {
                 <div>DESIGN</div>
             </div>
         </div>
-        <ul className="nav-links">
+        <ul className="ul-navbar">
             <li><Link to="/">MAIN</Link></li>
             <li><Link to="/project">PROJECTS</Link></li>
             <li><Link to="/service">SERVICE</Link></li>
