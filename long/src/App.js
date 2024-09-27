@@ -4,6 +4,10 @@ import Login from './Components/Login/Login';
 import SignUp from './Components/SignUp/SignUp';
 import Contact from './Components/Contact/Contact';
 import Service from './Components/Service/Service';
+import MainLayout from './Components/MainLayout';
+import Construction from './Components/Construction/Construction';
+import Design from './Components/Design/Design';
+import Consultation from './Components/Consultation/Consultation';
 
 function App() {
   const router = createBrowserRouter([
@@ -26,6 +30,28 @@ function App() {
     {
       path: "service",
       element: <Service />,
+    },
+    {
+      path: "sidebar",
+      element: < MainLayout />,
+      children: [
+        {
+          path: 'consultation',
+          element: <Consultation />,
+        },
+        {
+          path: 'design',
+          element: <Design />,
+        },
+        {
+          path: 'construction',
+          element: <Construction />,
+        },
+      ]
+    },
+    {
+      path: "design",
+      element: <Contact />,
     },
   ]);
 
