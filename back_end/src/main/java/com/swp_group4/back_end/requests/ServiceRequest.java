@@ -19,5 +19,6 @@ public class ServiceRequest {
     String lastname;
     String phone;
     String address;
-    String detail;
+    String customerRequest;
+
 }

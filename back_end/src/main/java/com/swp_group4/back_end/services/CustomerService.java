@@ -4,6 +4,7 @@ import com.swp_group4.back_end.entities.Customer;
 import com.swp_group4.back_end.enums.Gender;
 import com.swp_group4.back_end.exception.AppException;
 import com.swp_group4.back_end.exception.ErrorCode;
+import com.swp_group4.back_end.mapper.CustomerMapper;
 import com.swp_group4.back_end.repositories.CustomerRepository;
 import com.swp_group4.back_end.requests.ServiceRequest;
 import com.swp_group4.back_end.requests.UpdateInfoRequest;
@@ -25,103 +26,48 @@ public class CustomerService {
 
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    CustomerMapper customerMapper;
 
     public void createCustomer(String accountId, String firstname) {
-        Customer customer = Customer.builder()
+        customerRepository.save(Customer.builder()
                 .accountId(accountId)
                 .firstname(firstname)
-                .build();
-        customerRepository.save(customer);
+                .build());
     }
 
     public CustomerResponse getOwnedInfo(){
         var context = SecurityContextHolder.getContext();
         String accountId = context.getAuthentication().getName();
-
         Customer customer = customerRepository.findByAccountId(accountId).orElseThrow(()
                 -> new AppException(ErrorCode.USER_NOT_EXIST));
-
-        return CustomerResponse.builder()
-                .firstname(customer.getFirstname())
-                .lastname(customer.getLastname())
-                .phone(customer.getPhone())
-                .address(customer.getAddress())
-                .gender(customer.getGender())
-                .birthday(customer.getBirthday())
-                .build();
+        CustomerResponse response = new CustomerResponse();
+        return customerMapper.customerToResponse(customer, response);
     }
 
     public CustomerResponse updateOwnedInfo(UpdateInfoRequest request) {
-
         var context = SecurityContextHolder.getContext();
         String accountId = context.getAuthentication().getName();
-
         Customer customer = customerRepository.findByAccountId(accountId).orElseThrow(()
                 -> new AppException(ErrorCode.USER_NOT_EXIST));
-
-        String firstname = request.getFirstname();
-        if (!firstname.isEmpty() && !firstname.equals(customer.getFirstname())) {
-            customer.setFirstname(firstname);
-        }
-        String lastname = request.getLastname();
-        if (!lastname.isEmpty() && !lastname.equals(customer.getLastname())) {
-            customer.setLastname(lastname);
-        }
-        String phone = request.getPhone();
-        if (!phone.isEmpty() && !phone.equals(customer.getPhone())) {
-            customer.setPhone(phone);
-        }
-        String address = request.getAddress();
-        if (!address.isEmpty() && !address.equals(customer.getAddress())) {
-            customer.setAddress(address);
-        }
-        Gender gender = request.getGender();
-        if (!gender.equals(customer.getGender())) {
-            customer.setGender(gender);
-        }
-        Date birthday = request.getBirthday();
-        if (!birthday.equals(customer.getBirthday())) {
-            customer.setBirthday(birthday);
-        }
-
+        customerMapper.updateInfoToCustomer(request, customer);
         customerRepository.save(customer);
-
-        return CustomerResponse.builder()
-                .firstname(customer.getFirstname())
-                .lastname(customer.getLastname())
-                .phone(customer.getPhone())
-                .address(customer.getAddress())
-                .gender(customer.getGender())
-                .birthday(customer.getBirthday())
-                .build();
+        CustomerResponse response = new CustomerResponse();
+        return customerMapper.customerToResponse(customer, response);
     }
 
     public ServiceResponse contactUs(ServiceRequest serviceRequest) {
-
-        fillInfoCustomer(serviceRequest);
         var context = SecurityContextHolder.getContext();
         String accountId = context.getAuthentication().getName();
+        Customer customer = customerRepository.findByAccountId(accountId).orElseThrow(()
+                -> new AppException(ErrorCode.USER_NOT_EXIST));
+        customerMapper.serviceRequestToCustomer(serviceRequest, customer);
+        customerRepository.save(customer);
 
         return ServiceResponse.builder()
                 .service(serviceRequest.getService())
-                .detail(serviceRequest.getDetail())
+                .detail(serviceRequest.getCustomerRequest())
                 .build();
-    }
-
-    // Fill thông tin Customer từ Contact Us
-    private void fillInfoCustomer(ServiceRequest serviceRequest) {
-        var context = SecurityContextHolder.getContext();
-        String accountId = context.getAuthentication().getName();
-
-        Customer customer = customerRepository.findByAccountId(accountId).orElseThrow(()
-                -> new AppException(ErrorCode.USER_NOT_EXIST));
-
-        customer.setFirstname(serviceRequest.getFirstname());
-        customer.setLastname(serviceRequest.getLastname());
-        customer.setPhone(serviceRequest.getPhone());
-        customer.setAddress(serviceRequest.getAddress());
-        customerRepository.save(customer);
-
     }
 
 }
