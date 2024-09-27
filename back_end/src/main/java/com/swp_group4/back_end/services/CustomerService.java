@@ -1,5 +1,6 @@
 package com.swp_group4.back_end.services;
 
+import com.swp_group4.back_end.entities.ConstructionOrder;
 import com.swp_group4.back_end.entities.Customer;
 import com.swp_group4.back_end.enums.Gender;
 import com.swp_group4.back_end.exception.AppException;
@@ -8,6 +9,7 @@ import com.swp_group4.back_end.mapper.CustomerMapper;
 import com.swp_group4.back_end.repositories.CustomerRepository;
 import com.swp_group4.back_end.requests.ServiceRequest;
 import com.swp_group4.back_end.requests.UpdateInfoRequest;
+import com.swp_group4.back_end.responses.ConstructOrderResponse;
 import com.swp_group4.back_end.responses.CustomerResponse;
 import com.swp_group4.back_end.responses.ServiceResponse;
 import lombok.AccessLevel;
@@ -28,6 +30,8 @@ public class CustomerService {
     CustomerRepository customerRepository;
     @Autowired
     CustomerMapper customerMapper;
+    @Autowired
+    ConstructOrderService constructOrderService;
 
     public void createCustomer(String accountId, String firstname) {
         customerRepository.save(Customer.builder()
@@ -56,7 +60,8 @@ public class CustomerService {
         return customerMapper.customerToResponse(customer, response);
     }
 
-    public ServiceResponse contactUs(ServiceRequest serviceRequest) {
+    public ServiceResponse<?> contactUs(ServiceRequest serviceRequest) {
+
         var context = SecurityContextHolder.getContext();
         String accountId = context.getAuthentication().getName();
         Customer customer = customerRepository.findByAccountId(accountId).orElseThrow(()
@@ -64,10 +69,14 @@ public class CustomerService {
         customerMapper.serviceRequestToCustomer(serviceRequest, customer);
         customerRepository.save(customer);
 
-        return ServiceResponse.builder()
-                .service(serviceRequest.getService())
-                .detail(serviceRequest.getCustomerRequest())
-                .build();
+        if (serviceRequest.getService().name().equals("CONSTRUCTION_SERVICE")) {
+            ConstructionOrder constructionOrder = constructOrderService.createOrder(serviceRequest, customer);
+            return constructOrderService.contactUsForConstruction(serviceRequest, constructionOrder);
+        }
+//        if (serviceRequest.getService().name().equals("MAINTENANCE_SERVICE")) {
+//          return contactUsForMaintenance(serviceRequest);
+//        }
+       return null;
     }
 
 }

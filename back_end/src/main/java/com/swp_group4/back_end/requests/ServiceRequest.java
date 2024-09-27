@@ -6,6 +6,8 @@ import jakarta.persistence.Enumerated;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.ZonedDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,5 +22,6 @@ public class ServiceRequest {
     String phone;
     String address;
     String customerRequest;
+    ZonedDateTime date;
 
 }

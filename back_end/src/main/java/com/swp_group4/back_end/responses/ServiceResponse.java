@@ -12,10 +12,10 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class ServiceResponse {
+public class ServiceResponse<T> {
 
     @Enumerated(EnumType.STRING)
     Service service;
-    String detail;
+    T data;
 
 }

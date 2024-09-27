@@ -28,8 +28,8 @@ public class CustomerController {
 
     // Gọi hàm gửi request từ Customer (URL: localhost:8080/contact-us)
     @PostMapping("/contact-us")
-    public ApiResponse<ServiceResponse> contactUs(@RequestBody ServiceRequest request) {
-        return ApiResponse.<ServiceResponse>builder()
+    public ApiResponse<ServiceResponse<?>> contactUs(@RequestBody ServiceRequest request) {
+        return ApiResponse.<ServiceResponse<?>>builder()
                 .data(customerService.contactUs(request))
                 .build();
     }
