@@ -1,18 +1,16 @@
 package com.swp_group4.back_end.services;
 
-import com.swp_group4.back_end.entities.Account;
 import com.swp_group4.back_end.entities.ConstructionOrder;
 import com.swp_group4.back_end.entities.Customer;
+import com.swp_group4.back_end.entities.Staff;
 import com.swp_group4.back_end.enums.ConstructionOrderStatus;
-import com.swp_group4.back_end.enums.Role;
 import com.swp_group4.back_end.mapper.ConstructionOrderMapper;
 import com.swp_group4.back_end.repositories.ConstructOrderRepository;
 import com.swp_group4.back_end.repositories.CustomerRepository;
+import com.swp_group4.back_end.repositories.StaffRepository;
 import com.swp_group4.back_end.requests.ServiceRequest;
-import com.swp_group4.back_end.responses.ConstructOrderResponse;
-import com.swp_group4.back_end.responses.ConsultConstructResponse;
-import com.swp_group4.back_end.responses.ServiceResponse;
-import com.swp_group4.back_end.responses.StaffResponse;
+import com.swp_group4.back_end.requests.StaffAssignedRequest;
+import com.swp_group4.back_end.responses.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +30,8 @@ public class ConstructOrderService {
     ConstructionOrderMapper constructionOrderMapper;
     @Autowired
     CustomerRepository customerRepository;
+    @Autowired
+    private StaffRepository staffRepository;
 
     public ConstructionOrder createOrder(ServiceRequest request, Customer customer) {
         ConstructionOrder constructionOrder = ConstructionOrder.builder()
@@ -76,6 +76,20 @@ public class ConstructOrderService {
 
     }
 
+    public StateTransitionResponse assignConsultant(StaffAssignedRequest request){
+        Staff staff = staffRepository.findById(request.getStaffId())
+                .orElseThrow(() -> new RuntimeException("Staff not found for id: " + request.getStaffId()));
+        ConstructionOrder order = constructOrderRepository.findById(request.getConstructionOrderId())
+                .orElseThrow(() -> new RuntimeException("ConstructionOrder not found for id: " + request.getConstructionOrderId()));
+        order.setConsultant(request.getStaffId());
+        order.setStatus(ConstructionOrderStatus.CONSULTING);
+        constructOrderRepository.save(order);
+        return StateTransitionResponse.builder()
+                .constructionOrderId(order.getConstructionOrderId())
+                .staffName(staff.getStaffName())
+                .status(order.getStatus())
+                .build();
+    }
 
 //    public ServiceResponse<MaintenanceOrderResponse> contactUsForMaintenance(ServiceRequest serviceRequest) {
 //        // Your logic for maintenance service...
