@@ -83,10 +83,9 @@ const Construction = () => {
             <tr>
               <th>Request ID</th>
               <th>Customer</th>
-              <th>Quotation</th>
-              <th>Type</th>
+              <th>Date</th>
+              <th>Phone</th>
               <th>Assign To</th>
-              <th>Approval</th>
               <th>Status</th>
             </tr>
           </thead>
@@ -99,32 +98,31 @@ const Construction = () => {
                   <tr key={request.id}>
                     <td>{request.id}</td>
                     <td>{request.customerName}</td>
-                    <td>{request.quotation}</td>
-                    <td>{request.type}</td>
+                    <td>{request.date}</td> {/* Cập nhật trường Date */}
+                    <td>{request.phone}</td> {/* Cập nhật trường Phone */}
                     <td>
                       <button
                         className="assign-button"
                         onClick={() => handleAssignStaffClick(request)}
                       >
                         Gán
-                      </button>{" "}
-                      {/* Nút gán nhân viên */}
+                      </button>
+                      {" " /* Nút gán nhân viên */}
                     </td>
-                    <td>{request.approval}</td>
                     <td>{request.status}</td>
                   </tr>
                 )
               )
             ) : (
               <tr>
-                <td colSpan="7">Không tìm thấy yêu cầu xây dựng</td>
+                <td colSpan="6">Không tìm thấy yêu cầu xây dựng</td>
               </tr>
             )}
           </tbody>
         </table>
       )}
-      {feedbackMessage && <p>{feedbackMessage}</p>}{" "}
-      {/* Hiển thị tin nhắn phản hồi nếu có */}
+      {feedbackMessage && <p>{feedbackMessage}</p>}
+      {" " /* Hiển thị tin nhắn phản hồi nếu có */}
       {isStaffListOpen && ( // Nếu danh sách nhân viên đang mở
         <div className="list">
           <div className="list-content">
@@ -147,8 +145,8 @@ const Construction = () => {
                 )}
               </ul>
             )}
-            <button onClick={() => setIsStaffListOpen(false)}>Đóng</button>{" "}
-            {/* Nút đóng danh sách */}
+            <button onClick={() => setIsStaffListOpen(false)}>Đóng</button>
+            {" " /* Nút đóng danh sách */}
           </div>
         </div>
       )}
@@ -157,3 +155,4 @@ const Construction = () => {
 };
 
 export default Construction;
+// thêm một dòng
