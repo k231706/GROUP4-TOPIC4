@@ -146,7 +146,6 @@ const Construction = () => {
               </ul>
             )}
             <button onClick={() => setIsStaffListOpen(false)}>Đóng</button>
-            {" " /* Nút đóng danh sách */}
           </div>
         </div>
       )}
@@ -155,4 +154,3 @@ const Construction = () => {
 };
 
 export default Construction;
-// thêm một dòng
